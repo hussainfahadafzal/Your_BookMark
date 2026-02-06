@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="page-header">
+    <div class="page-title">
+        <h1>{{ topic.name }}</h1>
+        <p>Add questions with links, track difficulty, and mark revisions when you revisit them.</p>
+    </div>
+    <div class="hero-actions">
+        <a href="{{ url_for('routes.topics') }}" class="btn secondary">← Back to Topics</a>
+        <a href="{{ url_for('routes.add_question', topic_id=topic.id) }}" class="btn">➕ Add Question</a>
+    </div>
+</section>
+
+<form method="get" class="card filter-bar">
+    <div>
+        <label for="difficulty">Difficulty</label>
+        <select name="difficulty" id="difficulty">
+            <option value="" {% if not selected_difficulty %}selected{% endif %}>All</option>
+            <option value="Easy" {% if selected_difficulty == "Easy" %}selected{% endif %}>Easy</option>
+            <option value="Medium" {% if selected_difficulty == "Medium" %}selected{% endif %}>Medium</option>
+            <option value="Hard" {% if selected_difficulty == "Hard" %}selected{% endif %}>Hard</option>
+        </select>
+    </div>
+    <div>
+        <label for="search">Search</label>
+        <input type="text" id="search" name="search" placeholder="Search question..." value="{{ search_query }}">
+    </div>
+    <div style="align-self: end;">
+        <button type="submit">Filter</button>
+    </div>
+</form>
+
+{% if questions %}
+    <div class="card table-card">
+        <table class="question-table">
+            <thead>
+                <tr>
+                    <th>Done</th>
+                    <th>Title</th>
+                    <th>Difficulty</th>
+                    <th>Link</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for q in questions %}
+                <tr>
+                    <td>
+                        <input class="checkbox" type="checkbox" {% if q.is_revised %}checked{% endif %}>
+                    </td>
+                    <td>{{ q.title }}</td>
+                    <td>
+                        <span class="badge {{ q.difficulty | lower }}">{{ q.difficulty }}</span>
+                    </td>
+                    <td>
+                        <a class="btn secondary" href="{{ q.link }}" target="_blank">Open</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% else %}
+    <div class="empty-state">
+        <div class="badge">No questions yet</div>
+        <h2>Save your first question link</h2>
+        <p>Collect problem links, add notes, and keep revisions in one place.</p>
+        <div class="hero-actions" style="justify-content: center;">
+            <a href="{{ url_for('routes.add_question', topic_id=topic.id) }}" class="btn">Add a question</a>
+        </div>
+    </div>
+{% endif %}
+{% endblock %}

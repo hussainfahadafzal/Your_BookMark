@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="page-header">
+    <div class="page-title">
+        <h1>Your Topics</h1>
+        <p>Create a topic first, then add questions with links inside it.</p>
+    </div>
+    <div class="hero-actions">
+        <a href="{{ url_for('routes.add_topic') }}" class="btn">➕ Add Topic</a>
+    </div>
+</section>
+
+{% if topics %}
+    <section class="topic-grid">
+        {% for topic in topics %}
+            <a href="{{ url_for('routes.questions', topic_id=topic.id) }}" class="card topic-card">
+                <h3>{{ topic.name }}</h3>
+                <p>Store links, mistakes, and takeaways for each question.</p>
+                <div class="topic-meta">
+                    <span>{{ topic.question_count }} question{{ 's' if topic.question_count != 1 else '' }}</span>
+                    <span>View →</span>
+                </div>
+            </a>
+        {% endfor %}
+    </section>
+{% else %}
+    <div class="empty-state">
+        <div class="badge">No topics yet</div>
+        <h2>Start your first topic</h2>
+        <p>Keep questions organized by subject: Arrays, Graphs, System Design, or anything you like.</p>
+        <div class="hero-actions" style="justify-content: center;">
+            <a href="{{ url_for('routes.add_topic') }}" class="btn">Create your first topic</a>
+        </div>
+    </div>
+{% endif %}
+
+{% endblock %}

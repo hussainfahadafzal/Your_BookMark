@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="page-header">
+    <div class="page-title">
+        <h1>My Account</h1>
+        <p>Manage your profile and keep your bookmarks organized.</p>
+    </div>
+    <div class="hero-actions">
+        <a href="{{ url_for('routes.dashboard') }}" class="btn secondary">← Back to Dashboard</a>
+    </div>
+</section>
+
+<div class="card account-card">
+    <div>
+        <p><strong>Email:</strong> {{ current_user.email }}</p>
+    </div>
+    <div>
+        <p><strong>User ID:</strong> {{ current_user.id }}</p>
+    </div>
+</div>
+{% endblock %}

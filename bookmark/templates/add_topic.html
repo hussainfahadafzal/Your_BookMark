@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="page-header">
+    <div class="page-title">
+        <h1>Create a Topic</h1>
+        <p>Topics keep your links grouped so you can revisit them fast.</p>
+    </div>
+    <div class="hero-actions">
+        <a href="{{ url_for('routes.topics') }}" class="btn secondary">← Back to Topics</a>
+    </div>
+</section>
+
+<div class="card form-card">
+    <form method="post">
+        {{ form.hidden_tag() }}
+        <div>
+            {{ form.name.label }}
+            {{ form.name(placeholder="e.g. Graph Algorithms, System Design, Arrays...") }}
+        </div>
+        {{ form.submit(class="btn") }}
+    </form>
+</div>
+{% endblock %}

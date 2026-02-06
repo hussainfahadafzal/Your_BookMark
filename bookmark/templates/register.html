@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block body_class %}auth-page{% endblock %}
+{% block content %}
+
+<div class="code-animation">
+    <div class="code-line"><span class="code-keyword">def</span> <span class="code-function">solve_problem</span>():</div>
+    <div class="code-line">    <span class="code-keyword">return</span> <span class="code-variable">solution</span></div>
+    <div class="code-line"><span class="code-keyword">const</span> <span class="code-variable">result</span> = <span class="code-function">algorithm</span>();</div>
+    <div class="code-line"><span class="code-keyword">function</span> <span class="code-function">calculate</span>() {</div>
+    <div class="code-line">    <span class="code-keyword">let</span> <span class="code-variable">answer</span> = <span class="code-number">42</span>;</div>
+    <div class="code-line"><span class="code-keyword">class</span> <span class="code-class">Solution</span> {</div>
+    <div class="code-line">    <span class="code-keyword">public</span> <span class="code-keyword">void</span> <span class="code-function">method</span>() {</div>
+    <div class="code-line"><span class="code-keyword">if</span> (<span class="code-variable">condition</span>) {</div>
+    <div class="code-line">    <span class="code-keyword">return</span> <span class="code-keyword">true</span>;</div>
+    <div class="code-line"><span class="code-keyword">for</span> (<span class="code-keyword">let</span> <span class="code-variable">i</span> = <span class="code-number">0</span>; <span class="code-variable">i</span> &lt; <span class="code-variable">n</span>; <span class="code-variable">i</span>++) {</div>
+    <div class="code-line">    <span class="code-variable">arr</span>[<span class="code-variable">i</span>] = <span class="code-variable">arr</span>[<span class="code-variable">i</span>] * <span class="code-number">2</span>;</div>
+    <div class="code-line">}</div>
+    <div class="code-line"><span class="code-keyword">async</span> <span class="code-keyword">function</span> <span class="code-function">fetchData</span>() {</div>
+    <div class="code-line">    <span class="code-keyword">const</span> <span class="code-variable">data</span> = <span class="code-keyword">await</span> <span class="code-function">api</span>.<span class="code-function">get</span>();</div>
+    <div class="code-line">}</div>
+</div>
+
+<section class="hero card">
+    <div>
+        <h1>Create your bookmark space</h1>
+        <p>Build topics, store every question link, and keep the insights that matter. Your_BookMark keeps your learning organized.</p>
+        <div class="hero-actions">
+            <span class="badge">📚 Topic-first flow</span>
+            <span class="badge">✨ Smart revision</span>
+        </div>
+    </div>
+    <div class="auth-wrapper">
+        <div class="auth-card card card-strong">
+            <h2>Create an account</h2>
+            <p>One account. Unlimited topics and links.</p>
+
+            <form method="POST" action="{{ url_for('routes.register') }}">
+                {{ form.hidden_tag() }}
+
+                {{ form.email.label }}
+                {{ form.email(placeholder="your.email@example.com") }}
+
+                {{ form.password.label }}
+                {{ form.password(placeholder="Create a strong password") }}
+
+                {{ form.confirm_password.label }}
+                {{ form.confirm_password(placeholder="Confirm your password") }}
+
+                {{ form.submit(class="btn") }}
+            </form>
+
+            <p class="auth-footer">
+                Already have an account?
+                <a href="{{ url_for('routes.login') }}">Login</a>
+            </p>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

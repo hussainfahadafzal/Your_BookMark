@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="page-header">
+    <div class="page-title">
+        <h1>Add a Question</h1>
+        <p>Save the link, add your notes, and mark revisions when you're done.</p>
+    </div>
+    <div class="hero-actions">
+        <a href="{{ url_for('routes.topics') }}" class="btn secondary">← Back to Topics</a>
+    </div>
+</section>
+
+<div class="card form-card">
+    <form method="post">
+        {{ form.hidden_tag() }}
+        <div>
+            {{ form.title.label }}
+            {{ form.title(placeholder="e.g. Two Sum") }}
+        </div>
+
+        <div>
+            {{ form.link.label }}
+            {{ form.link(placeholder="https://...") }}
+        </div>
+
+        <div>
+            {{ form.difficulty.label }}
+            {{ form.difficulty }}
+        </div>
+
+        <div>
+            {{ form.mistake.label }}
+            {{ form.mistake(rows=4, placeholder="Leave a quick note.") }}
+        </div>
+
+        <div>
+            {{ form.takeaway.label }}
+            {{ form.takeaway(rows=4, placeholder="Key insight or rule.") }}
+        </div>
+
+        <label>
+            {{ form.is_revised(class="checkbox") }}
+            Mark as revised
+        </label>
+
+        {{ form.submit(class="btn") }}
+    </form>
+</div>
+{% endblock %}

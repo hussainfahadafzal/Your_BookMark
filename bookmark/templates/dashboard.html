@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="page-header">
+    <div class="page-title">
+        <h1>Dashboard</h1>
+        <p>Track your learning progress and jump back into your saved questions.</p>
+    </div>
+    <div class="hero-actions">
+        <a href="{{ url_for('routes.topics') }}" class="btn">📚 View Topics</a>
+        <a href="{{ url_for('routes.add_topic') }}" class="btn secondary">➕ Create Topic</a>
+    </div>
+</section>
+
+<section class="stats-grid">
+    <div class="card stat-card">
+        <span>Total Topics</span>
+        <h3>{{ total_topics }}</h3>
+        <p class="text-muted">Organized by subject</p>
+    </div>
+    <div class="card stat-card">
+        <span>Total Questions</span>
+        <h3>{{ total_questions }}</h3>
+        <p class="text-muted">Questions saved across topics</p>
+    </div>
+    <div class="card stat-card">
+        <span>Pending Revisions</span>
+        <h3>{{ pending_questions }}</h3>
+        <p class="text-muted">Keep refining your answers</p>
+    </div>
+</section>
+
+<section class="hero card card-strong">
+    <div>
+        <h2>Build a topic, then save every link</h2>
+        <p>Topics keep your questions focused. Add links, notes, and revision status to stay on top of every concept.</p>
+    </div>
+    <div class="hero-actions">
+        <a href="{{ url_for('routes.add_topic') }}" class="btn">🚀 Start a topic</a>
+        <a href="{{ url_for('routes.topics') }}" class="btn secondary">📋 Manage topics</a>
+    </div>
+</section>
+{% endblock %}
