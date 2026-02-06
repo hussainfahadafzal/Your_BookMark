@@ -40,13 +40,14 @@
                     <th>Title</th>
                     <th>Difficulty</th>
                     <th>Link</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
                 {% for q in questions %}
                 <tr>
                     <td>
-                        <input class="checkbox" type="checkbox" {% if q.is_revised %}checked{% endif %}>
+                        <input class="checkbox js-revision-toggle" type="checkbox" data-toggle-url="{{ url_for('routes.toggle_question', question_id=q.id) }}" {% if q.is_revised %}checked{% endif %}>
                     </td>
                     <td>{{ q.title }}</td>
                     <td>
@@ -54,6 +55,11 @@
                     </td>
                     <td>
                         <a class="btn secondary" href="{{ q.link }}" target="_blank">Open</a>
+                    </td>
+                    <td>
+                        <form method="post" action="{{ url_for('routes.delete_question', question_id=q.id) }}" onsubmit="return confirm('Delete this question? This cannot be undone.');">
+                            <button type="submit" class="btn danger icon-btn" aria-label="Delete question">−</button>
+                        </form>
                     </td>
                 </tr>
                 {% endfor %}
@@ -70,4 +76,28 @@
         </div>
     </div>
 {% endif %}
+<script>
+    document.querySelectorAll(".js-revision-toggle").forEach((checkbox) => {
+        checkbox.addEventListener("change", async () => {
+            const toggleUrl = checkbox.dataset.toggleUrl;
+            if (!toggleUrl) {
+                return;
+            }
+            const nextValue = checkbox.checked;
+            try {
+                const response = await fetch(toggleUrl, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ is_revised: nextValue })
+                });
+                if (!response.ok) {
+                    throw new Error("Request failed");
+                }
+            } catch (error) {
+                checkbox.checked = !nextValue;
+                alert("Could not save the revision status. Please try again.");
+            }
+        });
+    });
+</script>
 {% endblock %}

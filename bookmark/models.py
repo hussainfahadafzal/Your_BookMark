@@ -22,7 +22,12 @@ class Topic(db.Model):
 
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
 
-    questions = db.relationship("Question", backref="topic", lazy=True)
+    questions = db.relationship(
+        "Question",
+        backref="topic",
+        lazy=True,
+        cascade="all, delete-orphan"
+    )
 
 
 class Question(db.Model):

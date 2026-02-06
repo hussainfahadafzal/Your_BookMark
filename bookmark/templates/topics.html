@@ -14,14 +14,19 @@
 {% if topics %}
     <section class="topic-grid">
         {% for topic in topics %}
-            <a href="{{ url_for('routes.questions', topic_id=topic.id) }}" class="card topic-card">
+            <div class="card topic-card">
                 <h3>{{ topic.name }}</h3>
                 <p>Store links, mistakes, and takeaways for each question.</p>
                 <div class="topic-meta">
                     <span>{{ topic.question_count }} question{{ 's' if topic.question_count != 1 else '' }}</span>
-                    <span>View →</span>
+                    <div class="topic-actions">
+                        <a href="{{ url_for('routes.questions', topic_id=topic.id) }}" class="btn secondary small">View →</a>
+                        <form method="post" action="{{ url_for('routes.delete_topic', topic_id=topic.id) }}" onsubmit="return confirm('Delete this topic and all its questions? This cannot be undone.');">
+                            <button type="submit" class="btn danger icon-btn" aria-label="Delete topic">−</button>
+                        </form>
+                    </div>
                 </div>
-            </a>
+            </div>
         {% endfor %}
     </section>
 {% else %}

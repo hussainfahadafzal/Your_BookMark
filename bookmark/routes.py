@@ -141,6 +141,24 @@ def questions(topic_id):
     )
 
 
+@routes.route("/question/<int:question_id>/toggle", methods=["POST"])
+@login_required
+def toggle_question(question_id):
+    question = (
+        Question.query.join(Topic)
+        .filter(Question.id == question_id, Topic.user_id == current_user.id)
+        .first_or_404()
+    )
+    payload = request.get_json(silent=True) or {}
+    is_revised = payload.get("is_revised")
+    if is_revised is None:
+        form_value = request.form.get("is_revised", "")
+        is_revised = form_value.lower() in {"true", "1", "yes", "on"}
+    question.is_revised = bool(is_revised)
+    db.session.commit()
+    return ("", 204)
+
+
 @routes.route("/question/add/<int:topic_id>", methods=["GET", "POST"])
 @login_required
 def add_question(topic_id):
@@ -168,6 +186,32 @@ def add_question(topic_id):
                 flash(f"{field}: {error}", "danger")
 
     return render_template("add_question.html", form=form)
+
+
+@routes.route("/question/<int:question_id>/delete", methods=["POST"])
+@login_required
+def delete_question(question_id):
+    question = (
+        Question.query.join(Topic)
+        .filter(Question.id == question_id, Topic.user_id == current_user.id)
+        .first_or_404()
+    )
+    topic_id = question.topic_id
+    db.session.delete(question)
+    db.session.commit()
+    flash("Question deleted successfully.", "success")
+    return redirect(url_for("routes.questions", topic_id=topic_id))
+
+
+@routes.route("/topic/<int:topic_id>/delete", methods=["POST"])
+@login_required
+def delete_topic(topic_id):
+    topic = Topic.query.filter_by(id=topic_id, user_id=current_user.id).first_or_404()
+    db.session.delete(topic)
+    db.session.commit()
+    flash("Topic deleted successfully.", "success")
+    return redirect(url_for("routes.topics"))
+
 
 @routes.route("/account")
 @login_required

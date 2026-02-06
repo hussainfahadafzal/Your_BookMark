@@ -1,31 +1,31 @@
 :root {
     /* Modern Color Palette */
-    --primary: #6366f1;
-    --primary-dark: #4f46e5;
-    --primary-light: #818cf8;
-    --accent: #10b981;
-    --accent-dark: #059669;
-    --accent-soft: rgba(16, 185, 129, 0.15);
+    --primary: #2563eb;
+    --primary-dark: #1e40af;
+    --primary-light: #60a5fa;
+    --accent: #14b8a6;
+    --accent-dark: #0f766e;
+    --accent-soft: rgba(20, 184, 166, 0.18);
     --danger: #ef4444;
     --danger-soft: rgba(239, 68, 68, 0.15);
     --warning: #f59e0b;
     --warning-soft: rgba(245, 158, 11, 0.15);
 
     /* Background Colors */
-    --bg: #0f172a;
-    --bg-secondary: #1e293b;
-    --bg-tertiary: #334155;
-    --surface: #1e293b;
-    --card: rgba(30, 41, 59, 0.6);
-    --card-hover: rgba(30, 41, 59, 0.8);
-    --card-strong: rgba(30, 41, 59, 0.9);
-    --glass: rgba(15, 23, 42, 0.85);
+    --bg: #0b1120;
+    --bg-secondary: #111827;
+    --bg-tertiary: #1f2937;
+    --surface: #111827;
+    --card: rgba(17, 24, 39, 0.7);
+    --card-hover: rgba(17, 24, 39, 0.85);
+    --card-strong: rgba(17, 24, 39, 0.95);
+    --glass: rgba(11, 17, 32, 0.88);
 
     /* Text Colors */
-    --text-main: #f1f5f9;
-    --text-muted: #94a3b8;
-    --text-soft: #cbd5e1;
-    --text-inverse: #0f172a;
+    --text-main: #f8fafc;
+    --text-muted: #9ca3af;
+    --text-soft: #d1d5db;
+    --text-inverse: #0b1120;
 
     /* Border & Divider */
     --border: rgba(148, 163, 184, 0.2);
@@ -1357,3 +1357,41 @@ body.auth-page .hero p {
 .mb-md { margin-bottom: var(--space-md); }
 .mb-lg { margin-bottom: var(--space-lg); }
 .mb-xl { margin-bottom: var(--space-xl); }
+
+.btn.danger {
+    background: linear-gradient(135deg, var(--danger), #dc2626);
+}
+
+.btn.danger::before {
+    background: linear-gradient(135deg, #f87171, var(--danger));
+}
+
+.btn.small {
+    padding: var(--space-sm) var(--space-lg);
+    font-size: var(--font-size-sm);
+}
+
+.btn.icon-btn {
+    padding: var(--space-xs) var(--space-md);
+    min-width: 38px;
+    min-height: 38px;
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-xl);
+    line-height: 1;
+    width: auto;
+    margin-top: 0;
+}
+.topic-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+.topic-card {
+    cursor: default;
+}
+.question-table th:last-child,
+.question-table td:last-child {
+    text-align: center;
+}
+
