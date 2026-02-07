@@ -217,3 +217,7 @@ def delete_topic(topic_id):
 @login_required
 def account():
     return render_template("account.html")
+
+@routes.route("/healthz")
+def healthz():
+    return "OK", 200
