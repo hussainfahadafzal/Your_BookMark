@@ -1,4 +1,4 @@
-
+import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
@@ -15,7 +15,9 @@ def create_app():
     app = Flask(__name__)
 
     app.config["SECRET_KEY"] = "d0782e15d02562e8c563941487976982645ae44644e687a3881503c468f17709"
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///bookmark.db"
+    app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv(
+    "DATABASE_URL", "sqlite:///bookmark.db"
+)
 
     db.init_app(app)
     bcrypt.init_app(app)
