@@ -59,6 +59,12 @@
     --transition-fast: 0.15s ease;
     --transition-base: 0.2s ease;
     --transition-slow: 0.3s ease;
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-in-out-back: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+    /* Animation durations */
+    --animate-in: 0.35s;
+    --animate-out: 0.25s;
 
     /* Typography */
     --font-family: "Plus Jakarta Sans", "Inter", system-ui, -apple-system, sans-serif;
@@ -192,12 +198,90 @@ body.auth-page .navbar {
     box-shadow: 0 0 30px rgba(99, 102, 241, 0.5);
 }
 
+/* Nav menu wrapper (desktop: flex row; mobile: drawer) */
+.nav-menu {
+    display: flex;
+    align-items: center;
+    gap: var(--space-lg);
+    flex-wrap: wrap;
+}
+
 .nav-links,
 .nav-actions {
     display: flex;
     align-items: center;
     gap: var(--space-sm);
     flex-wrap: wrap;
+}
+
+/* Hamburger button - hidden on desktop */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: background var(--transition-base), border-color var(--transition-base), transform var(--transition-base);
+    z-index: 110;
+}
+
+.hamburger:hover {
+    background: var(--card-hover);
+    border-color: var(--primary);
+}
+
+.hamburger:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.3);
+}
+
+.hamburger-line {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: var(--text-main);
+    border-radius: 2px;
+    transition: transform var(--animate-in) var(--ease-out-expo),
+                opacity var(--animate-in),
+                background var(--transition-base);
+}
+
+.hamburger-line:nth-child(1) {
+    margin-bottom: 6px;
+}
+
+.hamburger-line:nth-child(2) {
+    margin-bottom: 6px;
+}
+
+.hamburger-line:nth-child(3) {
+    margin-bottom: 0;
+}
+
+.hamburger.is-active .hamburger-line:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+    margin-bottom: 0;
+}
+
+.hamburger.is-active .hamburger-line:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+}
+
+.hamburger.is-active .hamburger-line:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+    margin-bottom: 0;
+}
+
+.nav-overlay {
+    display: none;
+    pointer-events: none;
 }
 
 .nav-links a,
@@ -337,6 +421,18 @@ html, body {
     margin-bottom: var(--space-xl);
     padding-bottom: var(--space-lg);
     border-bottom: 1px solid var(--divider);
+    animation: slideDown 0.5s var(--ease-out-expo) backwards;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-16px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .page-title h1 {
@@ -365,13 +461,27 @@ html, body {
     padding: var(--space-xl);
     box-shadow: var(--shadow-md);
     backdrop-filter: blur(10px);
-    transition: var(--transition-base);
+    transition: transform var(--transition-slow) var(--ease-out-expo),
+                box-shadow var(--transition-base),
+                border-color var(--transition-base);
+    animation: cardFadeIn 0.5s var(--ease-out-expo) backwards;
+}
+
+@keyframes cardFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .card:hover {
     border-color: var(--border-hover);
     box-shadow: var(--shadow-lg);
-    transform: translateY(-2px);
+    transform: translateY(-4px);
 }
 
 .card-strong {
@@ -392,7 +502,9 @@ button {
     cursor: pointer;
     text-decoration: none;
     box-shadow: var(--shadow-md);
-    transition: var(--transition-base);
+    transition: transform var(--transition-base) var(--ease-out-expo),
+                box-shadow var(--transition-base),
+                border-color var(--transition-base);
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -407,16 +519,21 @@ button {
     inset: 0;
     background: linear-gradient(135deg, var(--primary-light), var(--primary));
     opacity: 0;
-    transition: var(--transition-base);
+    transition: opacity var(--transition-base);
 }
 
 .btn:hover {
-    transform: translateY(-2px);
+    transform: translateY(-2px) scale(1.02);
     box-shadow: var(--shadow-xl), var(--shadow-glow);
 }
 
 .btn:hover::before {
     opacity: 1;
+}
+
+.btn:active {
+    transform: translateY(0) scale(0.98);
+    transition-duration: 0.1s;
 }
 
 .btn > * {
@@ -471,6 +588,14 @@ button[type="submit"] {
     overflow: hidden;
 }
 
+.stat-card {
+    animation: cardFadeIn 0.5s var(--ease-out-expo) backwards;
+}
+
+.stat-card:nth-child(1) { animation-delay: 0.05s; }
+.stat-card:nth-child(2) { animation-delay: 0.15s; }
+.stat-card:nth-child(3) { animation-delay: 0.25s; }
+
 .stat-card::before {
     content: "";
     position: absolute;
@@ -514,12 +639,23 @@ button[type="submit"] {
     display: flex;
     flex-direction: column;
     gap: var(--space-lg);
-    transition: var(--transition-base);
+    transition: transform var(--transition-slow) var(--ease-out-expo),
+                box-shadow var(--transition-base),
+                border-color var(--transition-base);
     position: relative;
     overflow: hidden;
     min-height: 180px;
     cursor: pointer;
+    animation: cardFadeIn 0.45s var(--ease-out-expo) backwards;
 }
+
+.topic-grid .topic-card:nth-child(1) { animation-delay: 0.05s; }
+.topic-grid .topic-card:nth-child(2) { animation-delay: 0.12s; }
+.topic-grid .topic-card:nth-child(3) { animation-delay: 0.19s; }
+.topic-grid .topic-card:nth-child(4) { animation-delay: 0.26s; }
+.topic-grid .topic-card:nth-child(5) { animation-delay: 0.33s; }
+.topic-grid .topic-card:nth-child(6) { animation-delay: 0.4s; }
+.topic-grid .topic-card:nth-child(n+7) { animation-delay: 0.45s; }
 
 .topic-card::before {
     content: "";
@@ -667,7 +803,8 @@ textarea:focus {
     outline: none;
     border-color: var(--primary);
     background: rgba(15, 23, 42, 0.8);
-    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.2);
+    transition: border-color var(--transition-base), box-shadow var(--transition-base);
 }
 
 input::placeholder,
@@ -1054,6 +1191,7 @@ body.auth-page .hero p {
     }
 }
 
+
 .flash strong {
     text-transform: uppercase;
     font-size: var(--font-size-xs);
@@ -1226,22 +1364,115 @@ body.auth-page .hero p {
         --font-size-4xl: 2rem;
         --font-size-3xl: 1.75rem;
     }
+
+    /* Hamburger visible, nav menu becomes overlay */
+    .hamburger {
+        display: flex;
+    }
+
+    .nav-menu {
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: min(320px, 85vw);
+        height: 100vh;
+        height: 100dvh;
+        background: var(--card-strong);
+        backdrop-filter: blur(24px);
+        border-left: 1px solid var(--border);
+        box-shadow: -8px 0 32px rgba(0, 0, 0, 0.3);
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: flex-start;
+        gap: 0;
+        padding: 80px var(--space-xl) var(--space-xl);
+        transform: translateX(100%);
+        visibility: hidden;
+        opacity: 0;
+        transition: transform var(--animate-in) var(--ease-out-expo),
+                    visibility var(--animate-out),
+                    opacity var(--animate-out);
+        z-index: 105;
+        overflow-y: auto;
+    }
+
+    .nav-menu.is-open {
+        transform: translateX(0);
+        visibility: visible;
+        opacity: 1;
+    }
+
+    .nav-menu .nav-links,
+    .nav-menu .nav-actions {
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+        gap: 0;
+    }
+
+    .nav-menu .nav-links a,
+    .nav-menu .nav-actions a {
+        display: block;
+        padding: var(--space-md) var(--space-lg);
+        border-radius: var(--radius-md);
+        margin-bottom: var(--space-xs);
+        animation: navLinkFadeIn 0.3s var(--ease-out-expo) backwards;
+    }
+
+    .nav-menu.is-open .nav-links a:nth-child(1) { animation-delay: 0.05s; }
+    .nav-menu.is-open .nav-links a:nth-child(2) { animation-delay: 0.1s; }
+    .nav-menu.is-open .nav-links a:nth-child(3) { animation-delay: 0.15s; }
+    .nav-menu.is-open .nav-actions .nav-profile { animation-delay: 0.2s; }
+    .nav-menu.is-open .nav-actions a:nth-child(2) { animation-delay: 0.25s; }
+    .nav-menu.is-open .nav-actions a:nth-child(3) { animation-delay: 0.3s; }
+
+    .nav-menu .nav-profile {
+        margin-bottom: var(--space-md);
+        padding: var(--space-md);
+        animation: navLinkFadeIn 0.3s var(--ease-out-expo) backwards;
+    }
+
+    .nav-menu .nav-actions a {
+        animation: navLinkFadeIn 0.3s var(--ease-out-expo) backwards;
+    }
+
+    @keyframes navLinkFadeIn {
+        from {
+            opacity: 0;
+            transform: translateX(12px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    .nav-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 104;
+        opacity: 0;
+        transition: opacity 0.25s ease;
+    }
+
+    .nav-overlay.is-open {
+        display: block;
+        pointer-events: auto;
+        opacity: 1;
+        animation: overlayFadeIn 0.25s ease forwards;
+    }
+
+    @keyframes overlayFadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
     
     .navbar {
-        flex-direction: column;
-        align-items: flex-start;
+        flex-wrap: wrap;
         padding: var(--space-md) var(--space-lg);
         gap: var(--space-md);
-    }
-    
-    .nav-links,
-    .nav-actions {
-        width: 100%;
-        justify-content: flex-start;
-    }
-    
-    .nav-profile {
-        display: none;
     }
     
     main {

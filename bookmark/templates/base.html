@@ -19,15 +19,23 @@
             </div>
         </a>
         {% if current_user.is_authenticated %}
-        <div class="nav-links">
-            <a href="{{ url_for('routes.dashboard') }}">Dashboard</a>
-            <a href="{{ url_for('routes.topics') }}">Topics</a>
-            <a href="{{ url_for('routes.add_topic') }}">Add Topic</a>
-        </div>
-        <div class="nav-actions">
-            <div class="nav-profile">Hi, {{ current_user.email.split('@')[0] }}</div>
-            <a href="{{ url_for('routes.account') }}">Account</a>
-            <a href="{{ url_for('routes.logout') }}">Logout</a>
+        <div class="nav-overlay" id="nav-overlay" aria-hidden="true"></div>
+        <button type="button" class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+        </button>
+        <div class="nav-menu" id="nav-menu">
+            <div class="nav-links">
+                <a href="{{ url_for('routes.dashboard') }}">Dashboard</a>
+                <a href="{{ url_for('routes.topics') }}">Topics</a>
+                <a href="{{ url_for('routes.add_topic') }}">Add Topic</a>
+            </div>
+            <div class="nav-actions">
+                <div class="nav-profile">Hi, {{ current_user.email.split('@')[0] }}</div>
+                <a href="{{ url_for('routes.account') }}">Account</a>
+                <a href="{{ url_for('routes.logout') }}">Logout</a>
+            </div>
         </div>
         {% endif %}
     </nav>
@@ -47,5 +55,36 @@
             {% block content %}{% endblock %}
         </div>
     </main>
+    <script>
+        (function() {
+            var hamburger = document.getElementById('hamburger');
+            var navMenu = document.getElementById('nav-menu');
+            if (hamburger && navMenu) {
+                var overlay = document.getElementById('nav-overlay');
+                function closeMenu() {
+                    navMenu.classList.remove('is-open');
+                    hamburger.classList.remove('is-active');
+                    hamburger.setAttribute('aria-expanded', 'false');
+                    if (overlay) overlay.classList.remove('is-open');
+                    document.body.classList.remove('menu-open');
+                }
+                function openMenu() {
+                    navMenu.classList.add('is-open');
+                    hamburger.classList.add('is-active');
+                    hamburger.setAttribute('aria-expanded', 'true');
+                    if (overlay) overlay.classList.add('is-open');
+                    document.body.classList.add('menu-open');
+                }
+                hamburger.addEventListener('click', function() {
+                    var isOpen = navMenu.classList.contains('is-open');
+                    if (isOpen) closeMenu(); else openMenu();
+                });
+                if (overlay) overlay.addEventListener('click', closeMenu);
+                navMenu.querySelectorAll('a').forEach(function(link) {
+                    link.addEventListener('click', closeMenu);
+                });
+            }
+        })();
+    </script>
 </body>
 </html>
