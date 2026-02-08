@@ -51,16 +51,15 @@ Your_BookMark focuses on **structured revision**, not just problem solving.
 
 ---
 
-## ⚠️ Important Note About Data Persistence
+## ✅ Data Persistence
 
-This application is deployed on **Render Free Tier** using **SQLite**.
-Due to platform limitations, the database **resets on every redeploy**.
-As a result:
-- User accounts may need to be re-created
-- Previously stored data may be cleared
+This application now uses **PostgreSQL** as its primary database.
 
-For production use, the app can be easily migrated to a persistent database like **PostgreSQL**.
+- Data is **persistent across redeploys**
+- User accounts, topics, and questions are safely stored
+- Deployed on **Render** with environment-based configuration
 
+> Note: The free tier may spin down during inactivity, which can cause a short delay on first request.
 ---
 
 ## 📌 Purpose of This Project

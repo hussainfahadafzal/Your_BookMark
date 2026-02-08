@@ -1,4 +1,5 @@
-from flask import Blueprint, render_template, redirect, url_for, flash, request
+import os
+from flask import Blueprint, render_template, redirect, url_for, flash, request, abort
 from sqlalchemy import func
 from flask_login import login_user, logout_user, login_required, current_user
 
@@ -221,3 +222,20 @@ def account():
 @routes.route("/healthz")
 def healthz():
     return "OK", 200
+
+ADMIN_EMAIL = os.getenv("ADMIN_EMAIL")
+
+@routes.route("/admin/users")
+@login_required
+def admin_user():
+    if not ADMIN_EMAIL or current_user.email != ADMIN_EMAIL:
+        abort(403)
+
+    total_users = User.query.count()
+    users = User.query.order_by(User.id.desc()).all()
+
+    return render_template(
+        "admin_users.html",
+        users=users,
+        total_users=total_users
+    )
