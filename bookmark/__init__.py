@@ -36,11 +36,6 @@ def create_app():
     bcrypt.init_app(app)
     login_manager.init_app(app)
 
-    # 🔥 TEMPORARY (Render Free only) — create tables once
-    from bookmark.models import User, Topic, Question
-    with app.app_context():
-        db.create_all()
-
     # ✅ ROUTES
     from bookmark.routes import routes
     app.register_blueprint(routes)
