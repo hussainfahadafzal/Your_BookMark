@@ -73,6 +73,27 @@ This project was built as a **learning** to practice:
 
 ---
 
+## 📚 Key Learnings
+
+- Handling data persistence in cloud deployments  
+- Migrating from SQLite to PostgreSQL  
+- Designing relational database schemas correctly  
+- Debugging production-only issues  
+- Implementing admin-only backend features  
+- Deploying Flask applications with Gunicorn on Render  
+
+---
+
+## 🙌 Feedback
+
+This project was built as part of my backend learning journey.  
+Feedback, suggestions, and ideas for improvement are always welcome.
+
+⭐ If you found this project useful, consider giving the repository a star!
+
+---
+
 ## 👤 Author
 
 **Fahad Afzal Hussain**
+

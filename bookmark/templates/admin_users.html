@@ -5,48 +5,58 @@
 {% block content %}
 <div class="admin-container">
 
-    <h1 style="margin-bottom: 0.5rem;">Admin Dashboard</h1>
-    <p style="color: #666; margin-bottom: 1.5rem;">
+    <h1 style="margin-bottom: 0.25rem; color: #ffffff;">
+        Admin Dashboard
+    </h1>
+    <p style="color: #cbd5e1; margin-bottom: 1.75rem;">
         User statistics and overview
     </p>
 
     <!-- Stats Card -->
     <div style="
-        background: #fff;
-        border-radius: 12px;
-        padding: 1.5rem;
+        background: #0f172a;
+        border-radius: 14px;
+        padding: 1.75rem;
         margin-bottom: 2rem;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        border: 1px solid #1e293b;
     ">
-        <h2 style="margin: 0;">Total Users</h2>
-        <p style="font-size: 2.5rem; font-weight: 800; margin: 0.5rem 0 0;">
+        <h2 style="margin: 0; color: #e5e7eb;">Total Users</h2>
+        <p style="
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin: 0.5rem 0 0;
+            color: #38bdf8;
+        ">
             {{ total_users }}
         </p>
     </div>
 
     <!-- Users List -->
     <div style="
-        background: #fff;
-        border-radius: 12px;
-        padding: 1.5rem;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        background: #020617;
+        border-radius: 14px;
+        padding: 1.75rem;
+        border: 1px solid #1e293b;
     ">
-        <h2 style="margin-bottom: 1rem;">Registered Users</h2>
+        <h2 style="margin-bottom: 1rem; color: #e5e7eb;">
+            Registered Users
+        </h2>
 
         {% if users %}
             <ul style="list-style: none; padding: 0; margin: 0;">
                 {% for user in users %}
                     <li style="
                         padding: 0.75rem 0;
-                        border-bottom: 1px solid #eee;
+                        border-bottom: 1px solid #1e293b;
                         font-weight: 500;
+                        color: #e2e8f0;
                     ">
                         {{ loop.index }}. {{ user.email }}
                     </li>
                 {% endfor %}
             </ul>
         {% else %}
-            <p>No users found.</p>
+            <p style="color: #94a3b8;">No users found.</p>
         {% endif %}
     </div>
 
