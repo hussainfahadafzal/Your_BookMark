@@ -19,10 +19,17 @@ def create_app():
         "SECRET_KEY", "d0782e15d02562e8c563941487976982645ae44644e687a3881503c468f17709"
     )
 
-    app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv(
-        "DATABASE_URL", "sqlite:///bookmark.db"
-    )
+    # DATABASE (PostgreSQL only)
+    database_url = os.getenv("DATABASE_URL")
 
+    if not database_url:
+        raise RuntimeError("DATABASE_URL is not set")
+
+    # Fix for postgres:// -> postgresql://
+    if database_url.startswith("postgres://"):
+        database_url = database_url.replace("postgres://", "postgresql://", 1)
+
+    app.config["SQLALCHEMY_DATABASE_URI"] = database_url
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
     db.init_app(app)
@@ -31,9 +38,5 @@ def create_app():
 
     from bookmark.routes import routes
     app.register_blueprint(routes)
-
-    # ✅ THIS IS THE MISSING PIECE (VERY IMPORTANT)
-    with app.app_context():
-        db.create_all()
 
     return app
