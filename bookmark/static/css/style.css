@@ -1370,6 +1370,24 @@ body.auth-page .hero p {
     color: var(--text-main);
 }
 
+.question-notes {
+    display: grid;
+    gap: 0.35rem;
+    max-width: 340px;
+}
+
+.question-notes p {
+    margin: 0;
+    color: var(--text-soft);
+    font-size: var(--font-size-sm);
+    line-height: 1.45;
+    word-break: break-word;
+}
+
+.question-notes strong {
+    color: var(--text-main);
+}
+
 /* Account Card */
 .account-card {
     display: grid;

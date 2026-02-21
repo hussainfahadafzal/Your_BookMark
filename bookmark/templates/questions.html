@@ -38,6 +38,7 @@
                 <tr>
                     <th>Revisions</th>
                     <th>Title</th>
+                    <th>Notes</th>
                     <th>Difficulty</th>
                     <th>Link</th>
                     <th>Actions</th>
@@ -54,6 +55,12 @@
                         </div>
                     </td>
                     <td>{{ q.title }}</td>
+                    <td>
+                        <div class="question-notes">
+                            <p><strong>Mistake:</strong> {{ q.mistake if q.mistake else "-" }}</p>
+                            <p><strong>Takeaway:</strong> {{ q.takeaway if q.takeaway else "-" }}</p>
+                        </div>
+                    </td>
                     <td>
                         <span class="badge {{ q.difficulty | lower }}">{{ q.difficulty }}</span>
                     </td>
