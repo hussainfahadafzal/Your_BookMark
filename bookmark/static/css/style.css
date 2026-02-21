@@ -806,6 +806,10 @@ label {
     letter-spacing: 0.05em;
 }
 
+.note-label {
+    color: var(--text-main);
+}
+
 input,
 select,
 textarea {
@@ -1344,6 +1348,26 @@ body.auth-page .hero p {
     height: 20px;
     accent-color: var(--accent);
     cursor: pointer;
+}
+
+.revision-counter {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+.revision-counter .btn.icon-btn {
+    min-width: 32px;
+    min-height: 32px;
+    padding: 0;
+    font-size: var(--font-size-lg);
+}
+
+.revision-count {
+    min-width: 2.25rem;
+    text-align: center;
+    font-weight: 700;
+    color: var(--text-main);
 }
 
 /* Account Card */

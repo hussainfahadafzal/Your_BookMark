@@ -21,7 +21,7 @@ def dashboard():
     )
     pending_questions = (
         Question.query.join(Topic)
-        .filter(Topic.user_id == current_user.id, Question.is_revised.is_(False))
+        .filter(Topic.user_id == current_user.id, Question.revision_count == 0)
         .count()
     )
     return render_template(
@@ -151,11 +151,21 @@ def toggle_question(question_id):
         .first_or_404()
     )
     payload = request.get_json(silent=True) or {}
-    is_revised = payload.get("is_revised")
-    if is_revised is None:
-        form_value = request.form.get("is_revised", "")
-        is_revised = form_value.lower() in {"true", "1", "yes", "on"}
-    question.is_revised = bool(is_revised)
+    action = payload.get("action")
+    if action == "increment":
+        question.revision_count += 1
+    elif action == "decrement":
+        question.revision_count = max(0, question.revision_count - 1)
+    else:
+        count_value = payload.get("revision_count")
+        if count_value is None:
+            count_value = request.form.get("revision_count", 0)
+        try:
+            question.revision_count = max(0, int(count_value))
+        except (TypeError, ValueError):
+            question.revision_count = 0
+
+    question.is_revised = question.revision_count > 0
     db.session.commit()
     return ("", 204)
 
@@ -173,7 +183,8 @@ def add_question(topic_id):
             difficulty=form.difficulty.data,
             mistake=form.mistake.data,
             takeaway=form.takeaway.data,
-            is_revised=form.is_revised.data,
+            revision_count=max(0, form.revision_count.data or 0),
+            is_revised=(form.revision_count.data or 0) > 0,
             topic=topic
         )
         db.session.add(q)

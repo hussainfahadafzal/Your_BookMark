@@ -3,6 +3,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
+from sqlalchemy import inspect, text
 
 db = SQLAlchemy()
 bcrypt = Bcrypt()
@@ -36,8 +37,29 @@ def create_app():
     bcrypt.init_app(app)
     login_manager.init_app(app)
 
+    with app.app_context():
+        _ensure_revision_count_column()
+
     # ✅ ROUTES
     from bookmark.routes import routes
     app.register_blueprint(routes)
 
     return app
+
+
+def _ensure_revision_count_column():
+    inspector = inspect(db.engine)
+    if "questions" not in inspector.get_table_names():
+        return
+
+    columns = {col["name"] for col in inspector.get_columns("questions")}
+    if "revision_count" in columns:
+        return
+
+    db.session.execute(
+        text("ALTER TABLE questions ADD COLUMN revision_count INTEGER NOT NULL DEFAULT 0")
+    )
+    db.session.execute(
+        text("UPDATE questions SET revision_count = CASE WHEN is_revised THEN 1 ELSE 0 END")
+    )
+    db.session.commit()

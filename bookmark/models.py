@@ -65,6 +65,7 @@ class Question(db.Model):
     takeaway = db.Column(db.Text)
 
     is_revised = db.Column(db.Boolean, default=False)
+    revision_count = db.Column(db.Integer, nullable=False, default=0)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     topic_id = db.Column(

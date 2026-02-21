@@ -30,19 +30,19 @@
         </div>
 
         <div>
-            {{ form.mistake.label }}
+            {{ form.mistake.label(class="note-label") }}
             {{ form.mistake(rows=4, placeholder="Leave a quick note.") }}
         </div>
 
         <div>
-            {{ form.takeaway.label }}
+            {{ form.takeaway.label(class="note-label") }}
             {{ form.takeaway(rows=4, placeholder="Key insight or rule.") }}
         </div>
 
-        <label>
-            {{ form.is_revised(class="checkbox") }}
-            Mark as revised
-        </label>
+        <div>
+            {{ form.revision_count.label }}
+            {{ form.revision_count(min="0", placeholder="0") }}
+        </div>
 
         {{ form.submit(class="btn") }}
     </form>

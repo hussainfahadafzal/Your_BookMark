@@ -5,9 +5,9 @@ from wtforms import (
     SubmitField,
     TextAreaField,
     SelectField,
-    BooleanField
+    IntegerField
 )
-from wtforms.validators import DataRequired, Email, EqualTo, ValidationError
+from wtforms.validators import DataRequired, Email, EqualTo, ValidationError, NumberRange
 from bookmark.models import User
 
 
@@ -97,6 +97,10 @@ class QuestionForm(FlaskForm):
     mistake = TextAreaField("What I did wrong")
     takeaway = TextAreaField("What to remember next time")
 
-    is_revised = BooleanField("Mark as revised")
+    revision_count = IntegerField(
+        "Revision count",
+        default=0,
+        validators=[NumberRange(min=0, message="Revision count cannot be negative.")]
+    )
 
     submit = SubmitField("Save Question")
