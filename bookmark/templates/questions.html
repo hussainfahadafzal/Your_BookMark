@@ -7,8 +7,8 @@
         <p>Add questions with links, track difficulty, and mark revisions when you revisit them.</p>
     </div>
     <div class="hero-actions">
-        <a href="{{ url_for('routes.topics') }}" class="btn secondary">← Back to Topics</a>
-        <a href="{{ url_for('routes.add_question', topic_id=topic.id) }}" class="btn">➕ Add Question</a>
+        <a href="{{ url_for('routes.topics') }}" class="btn secondary">Back to Topics</a>
+        <a href="{{ url_for('routes.add_question', topic_id=topic.id) }}" class="btn">Add Question</a>
     </div>
 </section>
 
@@ -68,9 +68,12 @@
                         <a class="btn secondary" href="{{ q.link }}" target="_blank">Open</a>
                     </td>
                     <td>
-                        <form method="post" action="{{ url_for('routes.delete_question', question_id=q.id) }}" onsubmit="return confirm('Delete this question? This cannot be undone.');">
-                            <button type="submit" class="btn danger icon-btn" aria-label="Delete question">−</button>
-                        </form>
+                        <div class="question-actions">
+                            <a href="{{ url_for('routes.edit_question', question_id=q.id) }}" class="btn secondary small">Edit</a>
+                            <form method="post" action="{{ url_for('routes.delete_question', question_id=q.id) }}" onsubmit="return confirm('Delete this question? This cannot be undone.');">
+                                <button type="submit" class="btn danger icon-btn" aria-label="Delete question">-</button>
+                            </form>
+                        </div>
                     </td>
                 </tr>
                 {% endfor %}

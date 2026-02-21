@@ -1388,6 +1388,16 @@ body.auth-page .hero p {
     color: var(--text-main);
 }
 
+.question-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+.question-actions form {
+    display: block;
+}
+
 /* Account Card */
 .account-card {
     display: grid;

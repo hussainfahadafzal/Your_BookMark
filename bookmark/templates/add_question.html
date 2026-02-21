@@ -3,11 +3,11 @@
 {% block content %}
 <section class="page-header">
     <div class="page-title">
-        <h1>Add a Question</h1>
-        <p>Save the link, add your notes, and mark revisions when you're done.</p>
+        <h1>{{ page_title or "Add a Question" }}</h1>
+        <p>{{ page_subtitle or "Save the link, add your notes, and mark revisions when you're done." }}</p>
     </div>
     <div class="hero-actions">
-        <a href="{{ url_for('routes.topics') }}" class="btn secondary">← Back to Topics</a>
+        <a href="{{ url_for('routes.questions', topic_id=topic.id) if topic else url_for('routes.topics') }}" class="btn secondary">Back</a>
     </div>
 </section>
 
@@ -44,7 +44,7 @@
             {{ form.revision_count(min="0", placeholder="0") }}
         </div>
 
-        {{ form.submit(class="btn") }}
+        {{ form.submit(class="btn", value=submit_label or "Save Question") }}
     </form>
 </div>
 {% endblock %}

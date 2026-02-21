@@ -197,7 +197,51 @@ def add_question(topic_id):
             for error in errors:
                 flash(f"{field}: {error}", "danger")
 
-    return render_template("add_question.html", form=form)
+    return render_template(
+        "add_question.html",
+        form=form,
+        topic=topic,
+        page_title="Add a Question",
+        page_subtitle="Save the link, add your notes, and track revision count.",
+        submit_label="Save Question"
+    )
+
+
+@routes.route("/question/<int:question_id>/edit", methods=["GET", "POST"])
+@login_required
+def edit_question(question_id):
+    question = (
+        Question.query.join(Topic)
+        .filter(Question.id == question_id, Topic.user_id == current_user.id)
+        .first_or_404()
+    )
+    form = QuestionForm(obj=question)
+
+    if form.validate_on_submit():
+        question.title = form.title.data
+        question.link = form.link.data
+        question.difficulty = form.difficulty.data
+        question.mistake = form.mistake.data
+        question.takeaway = form.takeaway.data
+        question.revision_count = max(0, form.revision_count.data or 0)
+        question.is_revised = question.revision_count > 0
+        db.session.commit()
+        flash("Question updated successfully.", "success")
+        return redirect(url_for("routes.questions", topic_id=question.topic_id))
+
+    if request.method == "POST":
+        for field, errors in form.errors.items():
+            for error in errors:
+                flash(f"{field}: {error}", "danger")
+
+    return render_template(
+        "add_question.html",
+        form=form,
+        topic=question.topic,
+        page_title="Edit Question",
+        page_subtitle="Update link, mistake, takeaway, difficulty, and revision count.",
+        submit_label="Update Question"
+    )
 
 
 @routes.route("/question/<int:question_id>/delete", methods=["POST"])
