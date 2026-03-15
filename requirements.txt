@@ -21,4 +21,3 @@ WTForms==3.2.1
 gunicorn
 psycopg2-binary
 
-
