@@ -32,17 +32,27 @@ def create_app():
     app.config["SQLALCHEMY_DATABASE_URI"] = database_url
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
+    # ✅ Connection pool settings — required for Neon (serverless Postgres)
+    app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
+        "pool_pre_ping": True,       # test connection before using it
+        "pool_recycle": 300,         # recycle connections every 5 mins
+        "connect_args": {
+            "sslmode": "require"     # Neon requires SSL
+        }
+    }
+
     # ✅ INIT EXTENSIONS
     db.init_app(app)
     bcrypt.init_app(app)
     login_manager.init_app(app)
 
-    with app.app_context():
-        _ensure_revision_count_column()
-
-    # ✅ ROUTES
+    # ✅ ROUTES (register before app_context so models are imported)
     from bookmark.routes import routes
     app.register_blueprint(routes)
+
+    with app.app_context():
+        db.create_all()                    # ✅ Create tables if they don't exist
+        _ensure_revision_count_column()    # ✅ Add revision_count if missing
 
     return app
 
