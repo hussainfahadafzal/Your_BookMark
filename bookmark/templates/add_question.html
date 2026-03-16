@@ -4,47 +4,172 @@
 <section class="page-header">
     <div class="page-title">
         <h1>{{ page_title or "Add a Question" }}</h1>
-        <p>{{ page_subtitle or "Save the link, add your notes, and mark revisions when you're done." }}</p>
+        <p>{{ page_subtitle or "Save the link, document your approach, and track revisions." }}</p>
     </div>
     <div class="hero-actions">
-        <a href="{{ url_for('routes.questions', topic_id=topic.id) if topic else url_for('routes.topics') }}" class="btn secondary">Back</a>
+        <a href="{{ url_for('routes.questions', topic_id=topic.id) if topic else url_for('routes.topics') }}" class="btn secondary">← Back</a>
     </div>
 </section>
 
 <div class="card form-card">
-    <form method="post">
+    <form method="post" novalidate>
         {{ form.hidden_tag() }}
-        <div>
-            {{ form.title.label }}
-            {{ form.title(placeholder="e.g. Two Sum") }}
+
+        {# ── Section: Basics ── #}
+        <div class="form-section">
+            <div class="form-section-header">
+                <span class="form-section-icon">📌</span>
+                <div>
+                    <h3>Problem Details</h3>
+                    <p>The core info about this question.</p>
+                </div>
+            </div>
+
+            <div class="form-grid-2">
+                <div class="form-group {% if form.title.errors %}has-error{% endif %}">
+                    {{ form.title.label }}
+                    {{ form.title(placeholder="e.g. Two Sum, Longest Substring…") }}
+                    {% if form.title.description %}
+                        <span class="form-hint">{{ form.title.description }}</span>
+                    {% endif %}
+                    {% for error in form.title.errors %}
+                        <span class="form-error">{{ error }}</span>
+                    {% endfor %}
+                </div>
+
+                <div class="form-group {% if form.link.errors %}has-error{% endif %}">
+                    {{ form.link.label }}
+                    {{ form.link(placeholder="https://leetcode.com/problems/…") }}
+                    {% if form.link.description %}
+                        <span class="form-hint">{{ form.link.description }}</span>
+                    {% endif %}
+                    {% for error in form.link.errors %}
+                        <span class="form-error">{{ error }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="form-grid-3">
+                <div class="form-group {% if form.difficulty.errors %}has-error{% endif %}">
+                    {{ form.difficulty.label }}
+                    {{ form.difficulty }}
+                    {% for error in form.difficulty.errors %}
+                        <span class="form-error">{{ error }}</span>
+                    {% endfor %}
+                </div>
+
+                <div class="form-group">
+                    {{ form.platform.label }}
+                    {{ form.platform }}
+                    {% if form.platform.description %}
+                        <span class="form-hint">{{ form.platform.description }}</span>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    {{ form.approach.label }}
+                    {{ form.approach }}
+                    {% if form.approach.description %}
+                        <span class="form-hint">{{ form.approach.description }}</span>
+                    {% endif %}
+                </div>
+            </div>
         </div>
 
-        <div>
-            {{ form.link.label }}
-            {{ form.link(placeholder="https://...") }}
+        {# ── Section: Complexity ── #}
+        <div class="form-section">
+            <div class="form-section-header">
+                <span class="form-section-icon">⚡</span>
+                <div>
+                    <h3>Complexity Analysis</h3>
+                    <p>Document the time and space complexity of your solution.</p>
+                </div>
+            </div>
+
+            <div class="form-grid-2">
+                <div class="form-group {% if form.time_complexity.errors %}has-error{% endif %}">
+                    {{ form.time_complexity.label }}
+                    {{ form.time_complexity(placeholder="e.g. O(n log n)") }}
+                    {% if form.time_complexity.description %}
+                        <span class="form-hint">{{ form.time_complexity.description }}</span>
+                    {% endif %}
+                    {% for error in form.time_complexity.errors %}
+                        <span class="form-error">{{ error }}</span>
+                    {% endfor %}
+                </div>
+
+                <div class="form-group {% if form.space_complexity.errors %}has-error{% endif %}">
+                    {{ form.space_complexity.label }}
+                    {{ form.space_complexity(placeholder="e.g. O(n)") }}
+                    {% if form.space_complexity.description %}
+                        <span class="form-hint">{{ form.space_complexity.description }}</span>
+                    {% endif %}
+                    {% for error in form.space_complexity.errors %}
+                        <span class="form-error">{{ error }}</span>
+                    {% endfor %}
+                </div>
+            </div>
         </div>
 
-        <div>
-            {{ form.difficulty.label }}
-            {{ form.difficulty }}
+        {# ── Section: Notes ── #}
+        <div class="form-section">
+            <div class="form-section-header">
+                <span class="form-section-icon">📝</span>
+                <div>
+                    <h3>Learning Notes</h3>
+                    <p>Document mistakes and takeaways so you remember next time.</p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                {{ form.mistake.label(class="note-label") }}
+                {{ form.mistake(rows=4, placeholder="What went wrong? Which edge case did you miss? Which data structure did you reach for when you shouldn't have?") }}
+                {% if form.mistake.description %}
+                    <span class="form-hint">{{ form.mistake.description }}</span>
+                {% endif %}
+                {% for error in form.mistake.errors %}
+                    <span class="form-error">{{ error }}</span>
+                {% endfor %}
+            </div>
+
+            <div class="form-group">
+                {{ form.takeaway.label(class="note-label") }}
+                {{ form.takeaway(rows=4, placeholder="The one pattern, trick, or rule you must remember for next time.") }}
+                {% if form.takeaway.description %}
+                    <span class="form-hint">{{ form.takeaway.description }}</span>
+                {% endif %}
+                {% for error in form.takeaway.errors %}
+                    <span class="form-error">{{ error }}</span>
+                {% endfor %}
+            </div>
         </div>
 
-        <div>
-            {{ form.mistake.label(class="note-label") }}
-            {{ form.mistake(rows=4, placeholder="Leave a quick note.") }}
+        {# ── Section: Revision ── #}
+        <div class="form-section">
+            <div class="form-section-header">
+                <span class="form-section-icon">🔁</span>
+                <div>
+                    <h3>Revision Tracking</h3>
+                    <p>How many times have you solved or reviewed this problem?</p>
+                </div>
+            </div>
+
+            <div class="form-group" style="max-width: 220px;">
+                {{ form.revision_count.label }}
+                {{ form.revision_count(min="0", max="999", placeholder="0") }}
+                {% if form.revision_count.description %}
+                    <span class="form-hint">{{ form.revision_count.description }}</span>
+                {% endif %}
+                {% for error in form.revision_count.errors %}
+                    <span class="form-error">{{ error }}</span>
+                {% endfor %}
+            </div>
         </div>
 
-        <div>
-            {{ form.takeaway.label(class="note-label") }}
-            {{ form.takeaway(rows=4, placeholder="Key insight or rule.") }}
+        <div class="form-actions">
+            {{ form.submit(class="btn", value=submit_label or "Save Question") }}
+            <a href="{{ url_for('routes.questions', topic_id=topic.id) if topic else url_for('routes.topics') }}" class="btn secondary">Cancel</a>
         </div>
-
-        <div>
-            {{ form.revision_count.label }}
-            {{ form.revision_count(min="0", placeholder="0") }}
-        </div>
-
-        {{ form.submit(class="btn", value=submit_label or "Save Question") }}
     </form>
 </div>
 {% endblock %}

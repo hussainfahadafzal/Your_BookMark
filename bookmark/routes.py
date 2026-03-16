@@ -105,7 +105,11 @@ def add_topic():
     form = TopicForm()
 
     if form.validate_on_submit():
-        topic = Topic(name=form.name.data, user=current_user)
+        topic = Topic(
+            name=form.name.data.strip(),
+            description=form.description.data.strip() if form.description.data else "",
+            user=current_user,
+        )
         db.session.add(topic)
         db.session.commit()
         flash("Topic created successfully.", "success")
@@ -178,14 +182,18 @@ def add_question(topic_id):
 
     if form.validate_on_submit():
         q = Question(
-            title=form.title.data,
-            link=form.link.data,
+            title=form.title.data.strip(),
+            link=form.link.data.strip(),
             difficulty=form.difficulty.data,
+            platform=form.platform.data or "",
+            time_complexity=form.time_complexity.data.strip() if form.time_complexity.data else "",
+            space_complexity=form.space_complexity.data.strip() if form.space_complexity.data else "",
+            approach=form.approach.data or "",
             mistake=form.mistake.data,
             takeaway=form.takeaway.data,
             revision_count=max(0, form.revision_count.data or 0),
             is_revised=(form.revision_count.data or 0) > 0,
-            topic=topic
+            topic=topic,
         )
         db.session.add(q)
         db.session.commit()
@@ -218,9 +226,13 @@ def edit_question(question_id):
     form = QuestionForm(obj=question)
 
     if form.validate_on_submit():
-        question.title = form.title.data
-        question.link = form.link.data
+        question.title = form.title.data.strip()
+        question.link = form.link.data.strip()
         question.difficulty = form.difficulty.data
+        question.platform = form.platform.data or ""
+        question.time_complexity = form.time_complexity.data.strip() if form.time_complexity.data else ""
+        question.space_complexity = form.space_complexity.data.strip() if form.space_complexity.data else ""
+        question.approach = form.approach.data or ""
         question.mistake = form.mistake.data
         question.takeaway = form.takeaway.data
         question.revision_count = max(0, form.revision_count.data or 0)

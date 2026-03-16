@@ -3,7 +3,6 @@ from bookmark import db, login_manager
 from flask_login import UserMixin
 
 
-# Flask-Login user loader
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
@@ -15,15 +14,15 @@ def load_user(user_id):
 class User(db.Model, UserMixin):
     __tablename__ = "users"
 
-    id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(120), unique=True, nullable=False)
+    id       = db.Column(db.Integer, primary_key=True)
+    email    = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(60), nullable=False)
 
     topics = db.relationship(
         "Topic",
         backref="user",
         lazy=True,
-        cascade="all, delete-orphan"
+        cascade="all, delete-orphan",
     )
 
 
@@ -33,20 +32,21 @@ class User(db.Model, UserMixin):
 class Topic(db.Model):
     __tablename__ = "topics"
 
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), nullable=False)
+    id          = db.Column(db.Integer, primary_key=True)
+    name        = db.Column(db.String(50), nullable=False)
+    description = db.Column(db.String(300), nullable=False, default="")   # NEW
 
     user_id = db.Column(
         db.Integer,
         db.ForeignKey("users.id", ondelete="CASCADE"),
-        nullable=False
+        nullable=False,
     )
 
     questions = db.relationship(
         "Question",
         backref="topic",
         lazy=True,
-        cascade="all, delete-orphan"
+        cascade="all, delete-orphan",
     )
 
 
@@ -56,20 +56,25 @@ class Topic(db.Model):
 class Question(db.Model):
     __tablename__ = "questions"
 
-    id = db.Column(db.Integer, primary_key=True)
+    id    = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(200), nullable=False)
-    link = db.Column(db.String(300), nullable=False)
+    link  = db.Column(db.String(500), nullable=False)
 
-    difficulty = db.Column(db.String(10), nullable=False)
-    mistake = db.Column(db.Text)
+    difficulty       = db.Column(db.String(10),  nullable=False)
+    platform         = db.Column(db.String(30),  nullable=False, default="")   # NEW
+    approach         = db.Column(db.String(50),  nullable=False, default="")   # NEW
+    time_complexity  = db.Column(db.String(30),  nullable=False, default="")   # NEW
+    space_complexity = db.Column(db.String(30),  nullable=False, default="")   # NEW
+
+    mistake  = db.Column(db.Text)
     takeaway = db.Column(db.Text)
 
-    is_revised = db.Column(db.Boolean, default=False)
+    is_revised     = db.Column(db.Boolean, default=False)
     revision_count = db.Column(db.Integer, nullable=False, default=0)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    created_at     = db.Column(db.DateTime, default=datetime.utcnow)
 
     topic_id = db.Column(
         db.Integer,
         db.ForeignKey("topics.id", ondelete="CASCADE"),
-        nullable=False
+        nullable=False,
     )
